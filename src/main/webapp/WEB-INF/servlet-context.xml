@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 스프링 MVC 설정을 어노테이션 기반으로 처리 + 스프링 MVC의 여러 객체들을 자동으로 스프링의 Bean으로 등록하는 기능 -->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!-- 정적 파일의 경로 설정-->
+    <mvc:resources mapping="/resources/**" location="/resources/"></mvc:resources>
+
+    <!-- 스프링 MVC에서 제공하는 view를 어떻게 결정하는지 설정 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!-- 패키지를 스캔해서 @Controller 어노테이션이 추가된 클래스들의 객체들을 스프링의 Bean으로 설정 -->
+    <context:component-scan base-package="com.study.mytodo.controller"/>
+
+    <!-- Formatter 설정. conversionService라는 Bean을 등록 -->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="formatters">
+            <set>
+                <bean class="com.study.mytodo.controller.formatter.LocalDateFormatter"/>
+            </set>
+        </property>
+    </bean>
+
+    <!-- 스프링 MVC를 처리할 때 conversionService를 이용한다는 설정 -->
+    <mvc:annotation-driven  conversion-service="conversionService" />
+
+
+</beans>
