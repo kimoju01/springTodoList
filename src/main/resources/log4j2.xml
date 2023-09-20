@@ -18,6 +18,11 @@
             <AppenderRef ref="Console"/>
         </logger>
 
+        <!-- mapper 패키지 SQL 실행 로그 좀 더 자세히 보기 위한 설정 -->
+        <logger name="com.study.mytodo.mapper" level="TRACE" additivity="false">
+            <AppenderRef ref="Console"/>
+        </logger>
+
         <Root level="INFO" additivity="false">
             <AppenderRef ref="Console"/>
         </Root>
