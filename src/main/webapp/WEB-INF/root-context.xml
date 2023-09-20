@@ -37,4 +37,7 @@
     <!-- MyBatis Mapper 인터페이스 설정 -->
     <mybatis:scan base-package="com.study.mytodo.mapper"></mybatis:scan>
 
+    <!-- ModelMapperConfig를 스프링 Bean으로 인식 -->
+    <context:component-scan base-package="com.study.mytodo.config"/>
+
 </beans>
