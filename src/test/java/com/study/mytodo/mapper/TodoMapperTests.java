@@ -1,11 +1,14 @@
 package com.study.mytodo.mapper;
 
+import com.study.mytodo.domain.TodoVO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
 
 @Log4j2
 // @ExtendsWith: JUnit5 버전에서 'spring-test'를 사용하기 위한 설정
@@ -24,6 +27,19 @@ public class TodoMapperTests {
     @Test
     public void testGetTime() {
         log.info(todoMapper.getTime());
+    }
+
+    @Test
+    public void testInsert() {
+
+        TodoVO todoVO = TodoVO.builder()
+                .title("입력 테스트")
+                .dueDate(LocalDate.of(2023,12,25))
+                .writer("user00")
+                .build();
+
+        todoMapper.insert(todoVO);
+
     }
 
 }

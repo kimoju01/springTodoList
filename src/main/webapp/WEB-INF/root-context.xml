@@ -39,5 +39,8 @@
 
     <!-- ModelMapperConfig를 스프링 Bean으로 인식 -->
     <context:component-scan base-package="com.study.mytodo.config"/>
+    <!-- service 패키지를 스프링 Bean으로 등록 -->
+    <context:component-scan base-package="com.study.mytodo.service"/>
+
 
 </beans>
