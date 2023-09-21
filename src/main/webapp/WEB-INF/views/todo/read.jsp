@@ -1,4 +1,6 @@
+<!-- JSP 설정 -->
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!-- JSTL 설정 -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,35 +47,48 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        Featured
+                        TODO
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Todo List</h5>
-                        <!-- list table 시작 -->
-                        <table class="table">
-                            <thead>
-                            <tr>  <!-- table row -->
-                                <th scope="col">Tno</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Writer</th>
-                                <th scope="col">DueDate</th>
-                                <th scope="col">Finished</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach items="${dtoList}" var="dto">
-                            <tr>  <!-- table row -->
-                                <!-- c:out 태그로 특수 문자 이스케이프해서 안전하게 출력 -->
-                                <th scope="row"><c:out value="${dto.tno}"/></th>
-                                <td><a href="/todo/read?tno=${dto.tno}" class="text-decoration-none"><c:out value="${dto.title}"/></a></td>  <!-- table data -->
-                                <td><c:out value="${dto.writer}"/></td>
-                                <td><c:out value="${dto.dueDate}"/></td>
-                                <td><c:out value="${dto.finished}"/></td>
-                            </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-                        <!-- list table 끝 -->
+                        <div class="input-group mb-3">
+                          <span class="input-group-text">Tno</span>
+                          <input type="text" name="tno" class="form-control" placeholder="Title" value=<c:out value="${dto.tno}"></c:out> readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Title</span>
+                            <input type="text" name="title" class="form-control" placeholder="Title" value=<c:out value="${dto.title}"></c:out> readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">DueDate</span>
+                            <input type="date" name="dueDate" class="form-control" placeholder="DueDate" value=<c:out value="${dto.dueDate}"></c:out> readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Writer</span>
+                            <input type="text" name="writer" class="form-control" placeholder="Writer" value=<c:out value="${dto.writer}"></c:out> readonly>
+                        </div>
+                        <div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="finished" ${dto.finished?"checked":""} disabled>
+                            <label class="form-check-label">
+                              Finished
+                            </label>
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="button" class="btn btn-primary">Modify</button>
+                                <button type="button" class="btn btn-secondary">List</button>
+                            </div>
+                        </div>
+                        <script>
+                            document.querySelector(".btn-primary").addEventListener("click", function (e) {
+                                self.location = "/todo/modify?tno="+${dto.tno}
+                            }, false)
+
+                            document.querySelector(".btn-secondary").addEventListener("click", function (e) {
+                                self.location = "/todo/list";
+                            }, false)
+                        </script>
                     </div>
                 </div>
             </div>
@@ -82,7 +97,7 @@
     </div>
 
     <div class="row content">
-<%--        <h1>content</h1>--%>
+        <%--        <h1>content</h1>--%>
     </div>
 
     <!-- Footer 시작 -->
