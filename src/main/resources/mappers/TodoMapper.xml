@@ -25,4 +25,9 @@
         select * from tbl_todo where tno = #{tno}
     </select>
 
+    <!-- tno를 통해 삭제 -->
+    <delete id="delete">
+        delete from tbl_todo where tno = #{tno}
+    </delete>
+
 </mapper>
