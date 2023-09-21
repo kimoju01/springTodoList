@@ -63,9 +63,8 @@ dependencies {
     // ModelMapper - DTO와 VO간 변환
     implementation 'org.modelmapper:modelmapper:3.0.0'
 
-    // Validate - DTO 검증 관련
+    // Hibernate Validator - 서버사이드 데이터 검증
     implementation 'org.hibernate.validator:hibernate-validator:6.2.5.Final'
-
 
 }
 
