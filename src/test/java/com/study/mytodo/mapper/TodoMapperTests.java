@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Log4j2
 // @ExtendsWith: JUnit5 버전에서 'spring-test'를 사용하기 위한 설정
@@ -39,6 +40,15 @@ public class TodoMapperTests {
                 .build();
 
         todoMapper.insert(todoVO);
+
+    }
+
+    @Test
+    public void testSelectAll() {
+
+        List<TodoVO> voList = todoMapper.selectAll();
+
+        voList.forEach(vo -> log.info(vo));
 
     }
 

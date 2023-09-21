@@ -28,6 +28,8 @@ public class TodoController {
 
         log.info("todo list..........");
 
+        model.addAttribute("dtoList", todoService.getAll());
+
     }
 
     // GET /t odo/register 경로
