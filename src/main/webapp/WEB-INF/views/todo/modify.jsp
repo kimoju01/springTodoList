@@ -53,7 +53,7 @@
                         <form action="/todo/modify" method="post">
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Tno</span>
-                                <input type="text" name="tno" class="form-control" placeholder="Title" value=<c:out value="${dto.tno}"></c:out>>
+                                <input type="text" name="tno" class="form-control" placeholder="Tno" value=<c:out value="${dto.tno}"></c:out> readonly>
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Title</span>
@@ -95,7 +95,35 @@
                               formObj.method = "post"
 
                               formObj.submit()
-                            }, false)
+                            }, false);
+
+                            <!-- Modify 버튼 클릭 이벤트 -->
+                            document.querySelector(".btn-primary").addEventListener("click", function (e) {
+                                e.preventDefault()
+                                e.stopPropagation()
+
+                                formObj.action = "/todo/modify"
+                                formObj.method = "post"
+
+                                formObj.submit()
+                            }, false);
+
+                            <!-- List 버튼 클릭 이벤트 -->
+                            document.querySelector(".btn-secondary").addEventListener("click", function (e) {
+                                e.preventDefault()
+                                e.stopPropagation()
+
+                                self.location = "/todo/list"; <!-- 현재 웹 페이지의 위치를 변경 -->
+                            }, false);
+
+                            <!-- 클라이언트 측에서 서버에서 발생한 유효성 검사 오류 확인하고 처리할 수 있다 -->
+                            const serverValidResult = {}
+                            <c:forEach items = "${errors}" var="error">
+                            <!-- 각 반복에서 현재 'error' 객체의 필드, 메시지 가져와서 serverValidResult 객체에 필드=>이름, 메시지=>값으로 가지는 속성을 추가 -->
+                            serverValidResult['${error.getField()}'] = '${error.defaultMessage}'
+                            </c:forEach>
+
+                            console.log(serverValidResult)
 
                         </script>
                     </div>

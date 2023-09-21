@@ -30,4 +30,9 @@
         delete from tbl_todo where tno = #{tno}
     </delete>
 
+    <!-- tno 번호의 title, dueDate, finished 수정 -->
+    <update id="update">
+        update tbl_todo set title = #{title}, dueDate = #{dueDate}, finished = #{finished} where tno = #{tno}
+    </update>
+
 </mapper>

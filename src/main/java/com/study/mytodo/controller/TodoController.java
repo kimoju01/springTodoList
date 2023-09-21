@@ -42,7 +42,9 @@ public class TodoController {
 
     // POST /t odo/register
     @PostMapping("/register")
-    public String registerPost(@Valid TodoDTO todoDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String registerPost(@Valid TodoDTO todoDTO,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
         // @Valid, BindingResult를 통해 DTO 검증
         // RedirectAttributes: 리다이렉션을 통해 다른 페이지로 이동할 때 데이터를 함께 전달할 수 있다.
 
@@ -83,6 +85,28 @@ public class TodoController {
         log.info("tno: " + tno);
 
         todoService.remove(tno);
+
+        return "redirect:/todo/list";
+
+    }
+
+    @PostMapping("/modify")
+    public String modify(@Valid TodoDTO todoDTO,
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
+
+        if(bindingResult.hasErrors()) {
+            log.info("has error..........");
+            // 처리 과정에서 잘못된 결과는 error라는 이름의 일회용 데이터로 JSP에 전달된다. (새로고침하면 삭제되는 데이터)
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+
+            // 리다이렉트할 때 쿼리 스트링이 되는 값을 지정. modify?tno= 경로로 이동된다.
+            redirectAttributes.addAttribute("tno", todoDTO.getTno());
+            return "redirect:/todo/modify";
+        }
+
+        log.info(todoDTO);
+        todoService.modify(todoDTO);
 
         return "redirect:/todo/list";
 

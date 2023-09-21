@@ -25,6 +25,7 @@
         <property name="formatters">
             <set>
                 <bean class="com.study.mytodo.controller.formatter.LocalDateFormatter"/>
+                <bean class="com.study.mytodo.controller.formatter.CheckboxFormatter"/>
             </set>
         </property>
     </bean>
