@@ -35,4 +35,15 @@
         update tbl_todo set title = #{title}, dueDate = #{dueDate}, finished = #{finished} where tno = #{tno}
     </update>
 
+    <!-- PageRequestDTO에 있는 정보로 limit 값을 설정해서 select -->
+    <!-- MyBatis는 기본적으로 getXXX로 동작하기 때문에 #{skip}은 getSkip()을 호출한다. -->
+    <select id="selectList" resultType="com.study.mytodo.domain.TodoVO">
+        select * from tbl_todo order by tno desc limit #{skip}, #{size};
+    </select>
+
+    <!-- 전체 데이터의 개수 가져오기 -->
+    <select id="getCount" resultType="int">
+        select count(tno) from tbl_todo
+    </select>
+
 </mapper>

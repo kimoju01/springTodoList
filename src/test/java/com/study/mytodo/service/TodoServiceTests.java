@@ -1,5 +1,7 @@
 package com.study.mytodo.service;
 
+import com.study.mytodo.dto.PageRequestDTO;
+import com.study.mytodo.dto.PageResponseDTO;
 import com.study.mytodo.dto.TodoDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,22 @@ public class TodoServiceTests {
         // 만약 TodoService 클래스에도 @Service 어노테이션이 붙어있었더라도 스프링 IoC 컨테이너가 알아서
         // TodoService 인터페이스 구현체를 주입해서 TodoServiceImpl의 메서드가 실행된다.
         todoService.register(todoDTO);
+
+    }
+
+    @Test
+    public void testPaging() {
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                .build();
+
+        PageResponseDTO<TodoDTO> pageResponseDTO = todoService.getList(pageRequestDTO);
+
+        log.info(pageResponseDTO);
+
+        pageResponseDTO.getDtoList().stream().forEach(todoDTO -> log.info(todoDTO));
 
     }
 

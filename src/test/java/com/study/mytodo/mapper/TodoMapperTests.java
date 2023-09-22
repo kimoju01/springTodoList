@@ -1,6 +1,9 @@
 package com.study.mytodo.mapper;
 
 import com.study.mytodo.domain.TodoVO;
+import com.study.mytodo.dto.PageRequestDTO;
+import com.study.mytodo.dto.PageResponseDTO;
+import com.study.mytodo.dto.TodoDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,5 +63,21 @@ public class TodoMapperTests {
         log.info(vo);
 
     }
+
+    @Test
+    public void testSelectList() {
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                .build();
+        // skip = (page - 1) * 10 이기 때문에 page=2라면 skip은 10이 된다. -> 즉 처음 10개의 게시글을 건너뛴 2페이지라는 뜻.
+
+        List<TodoVO> voList = todoMapper.selectList(pageRequestDTO);
+
+        voList.forEach(vo -> log.info(vo));
+
+    }
+
 
 }
