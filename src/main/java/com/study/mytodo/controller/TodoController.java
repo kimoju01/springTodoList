@@ -1,5 +1,6 @@
 package com.study.mytodo.controller;
 
+import com.study.mytodo.dto.PageRequestDTO;
 import com.study.mytodo.dto.TodoDTO;
 import com.study.mytodo.service.TodoService;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +23,30 @@ public class TodoController {
 
     private final TodoService todoService;
 
-    // /t odo/list 경로
-    @RequestMapping("/list")
-    public void list(Model model) {
+    // /t odo/list 경로 - 페이징 X
+//    @RequestMapping("/list")
+//    public void list(Model model) {
+//
+//        log.info("todo list..........");
+//
+//        model.addAttribute("dtoList", todoService.getAll());
+//
+//    }
+
+    @GetMapping("/list")    // /list?page=3&size=20..
+    public void list(@Valid PageRequestDTO pageRequestDTO, BindingResult bindingResult, Model model) {
+        // PageRequestDTO를 파라미터로 처리하고 Model에 PageResponseDTO 담아서 JSP로 넘겨준다.
 
         log.info("todo list..........");
 
-        model.addAttribute("dtoList", todoService.getAll());
+        log.info(pageRequestDTO);
+
+        if(bindingResult.hasErrors()) {
+            // 잘못된 파라미터 값이 들어오는 경우는 page=1, size=10으로 고정되게 처리한다.
+            pageRequestDTO = PageRequestDTO.builder().build();
+        }
+
+        model.addAttribute("responseDTO", todoService.getList(pageRequestDTO));
 
     }
 

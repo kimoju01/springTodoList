@@ -61,7 +61,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${dtoList}" var="dto">
+                            <c:forEach items="${responseDTO.dtoList}" var="dto">
                             <tr>  <!-- table row -->
                                 <!-- c:out 태그로 특수 문자 이스케이프해서 안전하게 출력 -->
                                 <th scope="row"><c:out value="${dto.tno}"/></th>
@@ -74,6 +74,52 @@
                             </tbody>
                         </table>
                         <!-- list table 끝 -->
+                        <!-- 페이지 번호 시작 -->
+                        <div>
+                            <ul class="pagination justify-content-end">
+                                <!-- test 속성의 조건식이 true면 코드 실행 -->
+                                <c:if test="${responseDTO.prev}">
+                                    <li class="page-item">
+                                        <!-- 링크 이동을 ul 태그에 한 번에 이벤트 처리하기 위해 data-num으로 속성 넣기 -->
+                                        <a class="page-link" data-num="${responseDTO.start-1}">◀️</a>
+                                    </li>
+                                </c:if>
+                                <c:forEach begin="${responseDTO.start}" end="${responseDTO.end}" var="num">
+                                    <!-- 현재 페이지 번호면 버튼 활성화(active) -->
+                                    <li class="page-item ${responseDTO.page == num ? "active" : ""}">
+                                        <a class="page-link" data-num="${num}">${num}</a>
+                                    </li>
+                                </c:forEach>
+                                <!-- test 속성의 조건식이 true면 코드 실행 -->
+                                <c:if test="${responseDTO.next}">
+                                    <li class="page-item">
+                                        <a class="page-link" data-num="${responseDTO.end+1}">▶️</a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </div>
+                        <!-- 페이지 번호 끝 -->
+                        <script>
+                            document.querySelector(".pagination").addEventListener("click", function (e) {
+                                e.preventDefault()
+                                e.stopPropagation()
+
+                                // 클릭 이벤트 발생한 요소를 target에 저장
+                                const target = e.target
+
+                                // 클릭된 요소가 a 태그가 아닌 경우 함수 종료
+                                if(target.tagName !== 'A') {
+                                    return
+                                }
+
+                                // 클릭된 요소의 data-num 속성 가져와서 num에 저장
+                                const num = target.getAttribute("data-num")
+                                // 백틱(` `)을 이용해서 처리 (템플릿 리터럴) => 문자열 결합을 간편하게 할 수 있다.
+                                // 여기서 num은 자바스크립트 변수 num이다. 즉, 클릭된 요소의 data-num 속성 값 = 클릭된 페이지 번호.
+                                // num의 $ 표시 앞에 \ 를 넣는 이유는 EL 표현이 아니라는 걸 표시하기 위함.
+                                self.location = `/todo/list?page=\${num}`
+                            }, false)
+                        </script>
                     </div>
                 </div>
             </div>
