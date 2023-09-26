@@ -28,8 +28,22 @@ public class PageRequestDTO {
     @Positive
     private int size = 10;  // 한 페이지당 보여주는 데이터 수
 
+    private String link;
+
     public int getSkip() {  // limit에서 사용할 skip의 숫자는 (page - 1) * 10으로 설정된다.
         return (page - 1) * 10;
+    }
+
+    // 다른 페이지에서 목록 페이지로 이동했을 때 현재 페이지 번호를 유지하기 위해 page와 size를 전달해서
+    // GET 방식으로 페이지 이동에 필요한 링크 생성
+    public String getLink() {
+        if(link == null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("page=" + this.page);
+            builder.append("&size=" + this.size);
+            link = builder.toString();
+        }
+        return link;
     }
 
 }

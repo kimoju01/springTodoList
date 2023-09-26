@@ -36,6 +36,7 @@ public class TodoController {
     @GetMapping("/list")    // /list?page=3&size=20..
     public void list(@Valid PageRequestDTO pageRequestDTO, BindingResult bindingResult, Model model) {
         // PageRequestDTO를 파라미터로 처리하고 Model에 PageResponseDTO 담아서 JSP로 넘겨준다.
+        // 파라미터로 전달되는 PageRequestDTO는 Model로 자동 전달된다. 따로 선언할 필요 없이 JSP에서 사용 가능.
 
         log.info("todo list..........");
 
@@ -85,9 +86,11 @@ public class TodoController {
     }
 
     @GetMapping({"/read", "/modify"})
-    public void read(Long tno, Model model) {
+    public void read(Long tno, PageRequestDTO pageRequestDTO, Model model) {
+        // 조회 페이지, 수정 페이지에서 목록 페이지로 이동할 때 현재 페이지 번호를 유지하기 위해 PageRequestDTO 파라미터 필요
+        // JSP에서 목록 버튼 링크 처리 해주어야 해서 필요하다.
 
-        log.info("todo read..........");
+        log.info("todo read/modify..........");
 
         TodoDTO todoDTO = todoService.getOne(tno);
         log.info(todoDTO);
@@ -97,12 +100,16 @@ public class TodoController {
     }
 
     @PostMapping("/remove")
-    public String remove(Long tno, RedirectAttributes redirectAttributes) {
+    public String remove(Long tno, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
 
         log.info("todo remove..........");
         log.info("tno: " + tno);
 
         todoService.remove(tno);
+
+        // form 태그로 전송 받은 size 값과 1페이지로 설정한 page 값을 이용해 목록 페이지로 이동
+        redirectAttributes.addAttribute("page", 1);
+        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
 
         return "redirect:/todo/list";
 
@@ -110,6 +117,7 @@ public class TodoController {
 
     @PostMapping("/modify")
     public String modify(@Valid TodoDTO todoDTO,
+                         PageRequestDTO pageRequestDTO,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
 
@@ -125,6 +133,10 @@ public class TodoController {
 
         log.info(todoDTO);
         todoService.modify(todoDTO);
+
+        // 현재 페이지 번호를 유지하기 위해 리다이렉트할 때 쿼리 스트링으로 page, size 값도 추가해준다.
+        redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
+        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
 
         return "redirect:/todo/list";
 

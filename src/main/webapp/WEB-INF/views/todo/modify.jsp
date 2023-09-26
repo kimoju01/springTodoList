@@ -51,6 +51,10 @@
                     </div>
                     <div class="card-body">
                         <form action="/todo/modify" method="post">
+                            <!-- POST 방식으로 수정, 삭제 처리가 된 후 목록 화면으로 이동할 때 페이지 번호 유지에 필요한 값을 hidden으로 컨트롤러에 넘겨줌 -->
+                            <input type="hidden" name="page" value="${pageRequestDTO.page}">
+                            <input type="hidden" name="size" value="${pageRequestDTO.size}">
+
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Tno</span>
                                 <input type="text" name="tno" class="form-control" placeholder="Tno" value=<c:out value="${dto.tno}"></c:out> readonly>
@@ -113,7 +117,7 @@
                                 e.preventDefault()
                                 e.stopPropagation()
 
-                                self.location = "/todo/list"; <!-- 현재 웹 페이지의 위치를 변경 -->
+                                self.location = "/todo/list?${pageRequestDTO.link}"; <!-- 현재 웹 페이지의 위치를 변경 -->
                             }, false);
 
                             <!-- 클라이언트 측에서 서버에서 발생한 유효성 검사 오류 확인하고 처리할 수 있다 -->

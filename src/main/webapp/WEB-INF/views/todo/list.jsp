@@ -65,7 +65,8 @@
                             <tr>  <!-- table row -->
                                 <!-- c:out 태그로 특수 문자 이스케이프해서 안전하게 출력 -->
                                 <th scope="row"><c:out value="${dto.tno}"/></th>
-                                <td><a href="/todo/read?tno=${dto.tno}" class="text-decoration-none"><c:out value="${dto.title}"/></a></td>  <!-- table data -->
+                                <!-- 조회 페이지로 이동할 때 tno와 함께 page, size 값이 포함된 getLink() 결과값도 넘겨준다. -->
+                                <td><a href="/todo/read?tno=${dto.tno}&${pageRequestDTO.link}" class="text-decoration-none"><c:out value="${dto.title}"/></a></td>  <!-- table data -->
                                 <td><c:out value="${dto.writer}"/></td>
                                 <td><c:out value="${dto.dueDate}"/></td>
                                 <td><c:out value="${dto.finished}"/></td>
