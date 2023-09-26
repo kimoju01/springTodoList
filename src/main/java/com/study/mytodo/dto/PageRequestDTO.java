@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -29,6 +30,13 @@ public class PageRequestDTO {
     private int size = 10;  // 한 페이지당 보여주는 데이터 수
 
     private String link;
+
+    // 목록 페이지에서 검색, 필터링 처리를 위한 변수 선언
+    private String[] types;     // 검색 조건이 제목(t)인지 작성자(w)인지 둘 다 인지
+    private String keyword;     // 제목, 작성자 검색 값
+    private boolean finished;   // 완료 여부
+    private LocalDate from;     // 만료일 언제부터
+    private LocalDate to;       // 만료일 언제까지
 
     public int getSkip() {  // limit에서 사용할 skip의 숫자는 (page - 1) * 10으로 설정된다.
         return (page - 1) * 10;
