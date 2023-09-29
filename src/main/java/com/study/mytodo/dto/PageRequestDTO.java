@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Builder
 @Data
@@ -45,13 +48,51 @@ public class PageRequestDTO {
     // 다른 페이지에서 목록 페이지로 이동했을 때 현재 페이지 번호를 유지하기 위해 page와 size를 전달해서
     // GET 방식으로 페이지 이동에 필요한 링크 생성
     public String getLink() {
-        if(link == null) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("page=" + this.page);
-            builder.append("&size=" + this.size);
-            link = builder.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append("page=" + this.page);
+        builder.append("&size=" + this.size);
+
+        // 조회, 수정 페이지에 있는 List 버튼을 눌렀을 때 검색 조건을 유지하기 위해 쿼리 스트링 구성 추가
+        if (finished) {
+            builder.append("&finished=on");
         }
-        return link;
+
+        if (types != null && types.length > 0) {
+            for (int i = 0; i < types.length; i++) {
+                builder.append("&types=" + types[i]);
+            }
+        }
+
+        if (keyword != null) {
+            try {
+                builder.append("&keyword=" + URLEncoder.encode(keyword, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (from != null) {
+            builder.append("&from" + from.toString());
+        }
+
+        if (to != null) {
+            builder.append("&to" + to.toString());
+        }
+
+        return builder.toString();
+
+    }
+
+    // 화면에 검색 조건이 있는 경우 검색 후에 검색 조건이 초기화되지 않도록 PageRequestDTO 정보를 EL로 처리해야하는데
+    // 제목이랑 작성자를 types 배열로 처리하고 있어서 불편하기 때문에 편하게 사용하기 위해 메서드 작성
+    public boolean checkType(String type) {
+        if(types == null || types.length == 0) {
+            return false;
+        }
+        // type 문자열이 types 안에 존재하는 지 확인
+        // type::equals은 메서드 참조. type 객체의 equals 메서드 호출.
+        // 스트림에서 배열 types의 각 요소를 순회하면서 type 변수와 각 요소를 비교한다.
+        return Arrays.stream(types).anyMatch(type::equals);
     }
 
 }

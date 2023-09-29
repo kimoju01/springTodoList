@@ -111,7 +111,7 @@ public class TodoController {
         redirectAttributes.addAttribute("page", 1);
         redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
 
-        return "redirect:/todo/list";
+        return "redirect:/todo/list?" + pageRequestDTO.getLink();   // 삭제 처리 후에도 검색 결과 반영
 
     }
 
@@ -135,10 +135,13 @@ public class TodoController {
         todoService.modify(todoDTO);
 
         // 현재 페이지 번호를 유지하기 위해 리다이렉트할 때 쿼리 스트링으로 page, size 값도 추가해준다.
-        redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
-        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
+        // 주석 처리 한 이유: 글 수정 후 검색, 필터링 조건에 부합하지 않을 수 있기 때문에
+        // 목록 화면으로 이동하지 않고 검색, 필터링 조건 초기화 하면서 조회 화면으로 이동할 거라서 page, size값 필요 없음
+//        redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
+//        redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
+        redirectAttributes.addAttribute("tno", todoDTO.getTno());
 
-        return "redirect:/todo/list";
+        return "redirect:/todo/read";
 
     }
 

@@ -52,24 +52,26 @@
                     <div class="card-body">
                         <form action="/todo/modify" method="post">
                             <!-- POST 방식으로 수정, 삭제 처리가 된 후 목록 화면으로 이동할 때 페이지 번호 유지에 필요한 값을 hidden으로 컨트롤러에 넘겨줌 -->
-                            <input type="hidden" name="page" value="${pageRequestDTO.page}">
-                            <input type="hidden" name="size" value="${pageRequestDTO.size}">
+                            <!-- 주석 처리 한 이유: 글 수정 후 검색, 필터링 조건에 부합하지 않을 수 있기 때문에
+                            목록 화면으로 이동하지 않고 검색, 필터링 조건 초기화 하면서 조회 화면으로 이동할 거라서 page, size값 필요 없음-->
+<%--                            <input type="hidden" name="page" value="${pageRequestDTO.page}">--%>
+<%--                            <input type="hidden" name="size" value="${pageRequestDTO.size}">--%>
 
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Tno</span>
-                                <input type="text" name="tno" class="form-control" placeholder="Tno" value=<c:out value="${dto.tno}"></c:out> readonly>
+                                <input type="text" name="tno" class="form-control" placeholder="Tno" value="<c:out value="${dto.tno}"></c:out>" readonly>
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Title</span>
-                                <input type="text" name="title" class="form-control" placeholder="Title" value=<c:out value="${dto.title}"></c:out>>
+                                <input type="text" name="title" class="form-control" placeholder="Title" value="<c:out value="${dto.title}"></c:out>">
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">DueDate</span>
-                                <input type="date" name="dueDate" class="form-control" placeholder="DueDate" value=<c:out value="${dto.dueDate}"></c:out>>
+                                <input type="date" name="dueDate" class="form-control" placeholder="DueDate" value="<c:out value="${dto.dueDate}"></c:out>">
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Writer</span>
-                                <input type="text" name="writer" class="form-control" placeholder="Writer" value=<c:out value="${dto.writer}"></c:out> readonly>
+                                <input type="text" name="writer" class="form-control" placeholder="Writer" value="<c:out value="${dto.writer}"></c:out>" readonly>
                             </div>
                             <div>
                                 <div class="form-check">
@@ -95,7 +97,7 @@
                               e.preventDefault()
                               e.stopPropagation()
 
-                              formObj.action = "/todo/remove"
+                              formObj.action = "/todo/remove?${pageRequestDTO.link}" // 삭제 후에도 검색 조건 유지
                               formObj.method = "post"
 
                               formObj.submit()

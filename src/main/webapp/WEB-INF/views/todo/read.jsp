@@ -52,19 +52,19 @@
                     <div class="card-body">
                         <div class="input-group mb-3">
                           <span class="input-group-text">Tno</span>
-                          <input type="text" name="tno" class="form-control" placeholder="Title" value=<c:out value="${dto.tno}"></c:out> readonly>
+                          <input type="text" name="tno" class="form-control" placeholder="Title" value="<c:out value="${dto.tno}"></c:out>" readonly>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Title</span>
-                            <input type="text" name="title" class="form-control" placeholder="Title" value=<c:out value="${dto.title}"></c:out> readonly>
+                            <input type="text" name="title" class="form-control" placeholder="Title" value="<c:out value="${dto.title}"></c:out>" readonly>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">DueDate</span>
-                            <input type="date" name="dueDate" class="form-control" placeholder="DueDate" value=<c:out value="${dto.dueDate}"></c:out> readonly>
+                            <input type="date" name="dueDate" class="form-control" placeholder="DueDate" value="<c:out value="${dto.dueDate}"></c:out>" readonly>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Writer</span>
-                            <input type="text" name="writer" class="form-control" placeholder="Writer" value=<c:out value="${dto.writer}"></c:out> readonly>
+                            <input type="text" name="writer" class="form-control" placeholder="Writer" value="<c:out value="${dto.writer}"></c:out>" readonly>
                         </div>
                         <div>
                           <div class="form-check">

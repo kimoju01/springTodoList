@@ -40,13 +40,49 @@
             </div>
         </div>
         <!-- navbar 끝 -->
-        <!-- Card 시작 -->
+        <!-- 검색 Card 시작 -->
+        <div class="row content">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Search</h5>
+                        <!-- form 태그로 검색 조건 전송 -->
+                        <form action="/todo/list" method="get">
+                            <input type="hidden" name="size" value="${pageRequestDTO.size}">
+                            <!-- 완료 여부, 제목, 작성자 체크박스, 검색 입력 값, 날짜 -->
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="finished" ${pageRequestDTO.finished ? "checked" : ""}>
+                                    <label class="form-check-label">완료 여부</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-3">
+                                    <input class="form-check-input" type="checkbox" name="types" value="t" ${pageRequestDTO.checkType("t") ? "checked" : ""}>
+                                    <label class="form-check-label">제목</label>
+                                </div>
+                                <div class="form-check form-check-inline mb-3">
+                                    <input class="form-check-input" type="checkbox" name="types" value="w" ${pageRequestDTO.checkType("w") ? "checked" : ""}>
+                                    <label class="form-check-label">작성자</label>
+                                </div>
+                                <input type="text" class="form-control mb-2" name="keyword" value='<c:out value="${pageRequestDTO.keyword}"/>' placeholder="검색할 내용을 입력하세요.">
+                                <div class="input-group mb-3">
+                                    <input type="date" class="form-control" name="from" value="${pageRequestDTO.from}">
+                                    <input type="date" class="form-control" name="to" value="${pageRequestDTO.to}">
+                                </div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <button type="reset" class="btn btn-secondary clearBtn">Clear</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 검색 Card 끝 -->
+        <!-- 목록 Card 시작 -->
         <div class="row content"> <!-- class 명 띄어쓰기 => 클래스가 여러 개 라는 뜻. row 클래스이자 content 클래스이다 -->
             <div class="col">
                 <div class="card">
-                    <div class="card-header">
-                        Featured
-                    </div>
                     <div class="card-body">
                         <h5 class="card-title">Todo List</h5>
                         <!-- list table 시작 -->
@@ -101,6 +137,7 @@
                         </div>
                         <!-- 페이지 번호 끝 -->
                         <script>
+                            // 페이지 번호 눌렀을 때 클릭 이벤트
                             document.querySelector(".pagination").addEventListener("click", function (e) {
                                 e.preventDefault()
                                 e.stopPropagation()
@@ -115,17 +152,32 @@
 
                                 // 클릭된 요소의 data-num 속성 가져와서 num에 저장
                                 const num = target.getAttribute("data-num")
+
+                                // 페이지 번호 이동 시에도 검색 조건이 유지되도록 함
+                                const formObj = document.querySelector("form")
                                 // 백틱(` `)을 이용해서 처리 (템플릿 리터럴) => 문자열 결합을 간편하게 할 수 있다.
                                 // 여기서 num은 자바스크립트 변수 num이다. 즉, 클릭된 요소의 data-num 속성 값 = 클릭된 페이지 번호.
                                 // num의 $ 표시 앞에 \ 를 넣는 이유는 EL 표현이 아니라는 걸 표시하기 위함.
-                                self.location = `/todo/list?page=\${num}`
+                                formObj.innerHTML += `<input type='hidden' name='page' value='\${num}'>`
+                                formObj.submit();
+
+                                // self.location = `/t odo/list?page=\${num}`
+
                             }, false)
+
+                            // Clear 버튼 눌렀을 때 검색 조건 초기화 시키기는 클릭 이벤트
+                            document.querySelector(".clearBtn").addEventListener("click", function (e) {
+                                e.preventDefault()
+                                e.stopPropagation()
+
+                                self.location = '/todo/list'
+                            })
                         </script>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Card 끝 -->
+        <!-- 목록 Card 끝 -->
     </div>
 
     <div class="row content">
